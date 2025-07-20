@@ -1,0 +1,8 @@
+*.csv
+*.log
+.venv/
+logs/
+__pycache__/
+*.txt
+*.xlsx
+web_service/

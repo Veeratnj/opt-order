@@ -1,0 +1,74 @@
+
+    {
+        "2":{   
+        "user_id":2,
+        "angelone_creds":{
+            "name":"Raja",
+            "email":"raja@test.com",
+            "api_key":"um1iKprH",
+            "username":"M55065663",
+            "pwd":7384,
+            "token":"BO6RSHEAKZGO4DCJYMK2NMGVS4"
+        },
+        "dhan_creds":{
+            "name":"Raja",
+            "email":"raja@test.com",
+            "client_id":"",
+            "access_token":""
+        }
+    },
+    
+     "7":{
+        "user_id":7,
+        "angelone_creds":{
+            "name":"Demo",
+            "email":"demo@test.com",
+            "api_key":"Uo3GNqh4",
+            "username":"V158268",
+            "pwd":1212,
+            "token":"W4UZV4CVSU65J4RMFRCFPMMBEM"
+
+        },
+        "dhan_creds":{
+            "name":"Demo",
+            "email":"demo@test.com",
+            "client_id" : "1100449732",
+            "access_token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkaGFuIiwicGFydG5lcklkIjoiIiwiZXhwIjoxNzU0NDUzNjA1LCJ0b2tlbkNvbnN1bWVyVHlwZSI6IlNFTEYiLCJ3ZWJob29rVXJsIjoiIiwiZGhhbkNsaWVudElkIjoiMTEwMDQ0OTczMiJ9.K_zJLkSzMNpmUPBqDzhhki2CD-s0WiByit-8YZa-WZutplFG5SRuio1lzBbEDb4hiTyVmD56rjY2O-57EXKW1Q"
+        }
+    }, 
+    "5":{
+        "user_id":5,
+        "angelone_creds":{
+            "name":"Kamal Raj",
+            "email":"kamal0to3@gmail.com",
+            "api_key":"R77xVFTM",
+            "username":"CHNA2756",
+            "pwd":3115,
+            "token":"HIPF3HUP467XMWTXZEJROVDOAU"
+
+        },
+        "dhan_creds":{
+            "name":"Kamal Raj",
+            "email":"kamal0to3@gmail.com",
+            "client_id":"1107645849",
+            "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkaGFuIiwicGFydG5lcklkIjoiIiwiZXhwIjoxNzU0NTM2MTAxLCJ0b2tlbkNvbnN1bWVyVHlwZSI6IlNFTEYiLCJ3ZWJob29rVXJsIjoiIiwiZGhhbkNsaWVudElkIjoiMTEwNzY0NTg0OSJ9.uBW2EdEJH0Th-Jan74wKbBb1wzCgag3hp3lSGvD9CAl1x7D_OD56D1sCGqNXbKBVnQFPrvnkTAHRKY3dJNWt9Q"
+        }
+    },
+     "6":{
+        "user_id":6,
+        "angelone_creds":{
+            "name":"Hemalatha R",
+            "email":"hemalatha_08krishnan@yahoo.in",
+            "api_key":"5afTALj7",
+            "username":"H59296493",
+            "pwd":8689,
+            "token":"C7GPZVQB376G3RHN6IQD6QKJ5A"
+        },
+        "dhan_creds":{
+            "name":"Hemalatha R",
+            "email":"hemalatha_08krishnan@yahoo.in",
+            "client_id":"",
+            "access_token":""
+        }
+    }
+}
