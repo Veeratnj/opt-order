@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 import pandas as pd
 import pytz
 from creds import *
-from options import OptionsStrikePriceTrader
+# from options import OptionsStrikePriceTrader
+from test import OptionsStrikePriceTrader as OSPT
 
 # Setup timezone
 ist = pytz.timezone("Asia/Kolkata")
@@ -37,17 +38,26 @@ def trigger(token):
     dhan_context = admin_obj.dhan_context
     print('check point 1')
     candle_df = admin_obj.get_strike_price_historical_data(token=token)
-    opt_obj = OptionsStrikePriceTrader(token=token, historical_df=candle_df, dhan_user_obj=admin_obj)
+    # opt_obj = OptionsStrikePriceTrader(token=token, historical_df=candle_df, dhan_user_obj=admin_obj)
+    opt_obj=OSPT(token=token, historical_df=candle_df, dhan_user_obj=admin_obj)
+    rsi_value=opt_obj.calculate_multi_rsi()
+
     print('check point 2')
-    if not(opt_obj.candle_rsi_checker()):
+    # if not(opt_obj.candle_rsi_checker()):
+    if rsi_value['RSI_5m'] < 50 and rsi_value['RSI_10m'] < 50:
         return 'initial condition failed'
-    signals_dict=opt_obj.check_fibonacci_entry_signal()
+    # signals_dict=opt_obj.check_fibonacci_entry_signal()
+    signals_dict=opt_obj.check_retracement_or_reset()
     with open("fib.txt", "a") as f:
                     f.write(f"type og fib {type(signals_dict)}  check_fibonacci_entry_signal: {str(signals_dict)}\n")
 
     if isinstance(signals_dict, dict):
                     entry_triggered = True
-                    entry_price = signals_dict['entry_price']
+                    # entry_price = signals_dict['entry_price']
+                    # stop_loss = signals_dict['stop_loss']
+                    # target = signals_dict['target']
+
+                    entry_price = signals_dict['entry']
                     stop_loss = signals_dict['stop_loss']
                     target = signals_dict['target']
 
@@ -68,7 +78,7 @@ def trigger(token):
 
     instruments = [(MarketFeed.NSE_FNO, token, MarketFeed.Ticker)]
     version = "v2"
-    entry_triggered = False
+    entry_triggered = True
     stop_loss = None
     target = None
 
@@ -85,15 +95,15 @@ def trigger(token):
     
 
     flagtime = datetime.now(ist)
-    admin_obj.dhan.place_order(
-                        security_id=token,
-                        exchange_segment=admin_obj.dhan.NSE_FNO,
-                        transaction_type=admin_obj.dhan.BUY,
-                        quantity=35,
-                        order_type=admin_obj.dhan.MARKET,
-                        product_type=admin_obj.dhan.INTRA,
-                        price=0
-                    )
+    # admin_obj.dhan.place_order(
+    #                     security_id=token,
+    #                     exchange_segment=admin_obj.dhan.NSE_FNO,
+    #                     transaction_type=admin_obj.dhan.BUY,
+    #                     quantity=35,
+    #                     order_type=admin_obj.dhan.MARKET,
+    #                     product_type=admin_obj.dhan.INTRA,
+    #                     price=0
+    #                 )
 
     try:
         while True:
@@ -117,12 +127,19 @@ def trigger(token):
                 if row is None:
                     continue
 
+                # opt_obj.add_live_data(
+                #     open_=row['open'],
+                #     high=row['high'],
+                #     low=row['low'],
+                #     close=row['close'],
+                #     timestamp=row['timestamp'],
+                # )
                 opt_obj.add_live_data(
                     open_=row['open'],
                     high=row['high'],
                     low=row['low'],
                     close=row['close'],
-                    timestamp=row['timestamp'],
+                    timestamp=row['timestamp'].replace(tzinfo=ist)
                 )
                 
 
@@ -144,10 +161,10 @@ def trigger(token):
                 #         product_type=admin_obj.dhan.INTRA,
                 #         price=0
                 #     )
-
-            if entry_triggered:
+            current_rsi=opt_obj.calculate_multi_rsi()
+            if False and entry_triggered:
                 pass
-            if current_ltp <= stop_loss:
+            if False and current_ltp <= stop_loss:
                 logging.info(f"🛑 Exit: Stop Loss Hit @ {current_ltp}")
                 admin_obj.dhan.place_order(
                     security_id=token,
@@ -174,8 +191,10 @@ def trigger(token):
                 )
                 return f"✅ Exit: Target Hit @ {current_ltp}"
                 # break
-            elif opt_obj.candle_rsi_checker():
-                logging.info(f"✅ Exit: rsi HitT @ {current_ltp}")
+            
+            # elif opt_obj.candle_rsi_checker():
+            elif  current_rsi['RSI_3m'] < 50 or current_rsi['RSI_5m'] < 50 or current_rsi['RSI_10m'] < 50:
+                logging.info(f"✅ Exit: rsi Hit @ {current_ltp}")
                 admin_obj.dhan.place_order(
                     security_id=token,
                     exchange_segment=admin_obj.dhan.NSE_FNO,

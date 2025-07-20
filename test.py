@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pandas_ta as ta
 
 RETRACEMENT_MATRIX_1 = [
     {"lower": 0.884, "upper": 0.854, "entry": 0.702, "sl": 0.884, "target": 0.44},
@@ -114,7 +115,7 @@ class OptionsStrikePriceTrader():
         self.historical_df.sort_values('timestamp', inplace=True)
         self.historical_df.reset_index(drop=True, inplace=True)
 
-    def calculate_multi_rsi(self):
+    def calculate_multi_rsi12(self):
         """
         Calculates 3, 5, and 10-minute RSI using pandas-ta.
         Assumes `self.historical_df` has UTC timestamps.
@@ -135,7 +136,7 @@ class OptionsStrikePriceTrader():
                 'volume': 'sum'
             }).dropna()
 
-            rsi_col = f'RSI_{timeframe}min'
+            rsi_col = f'RSI_{timeframe}m'
             resampled[rsi_col] = ta.rsi(resampled['close'], length=14)
 
             # Save the latest RSI value
@@ -144,7 +145,41 @@ class OptionsStrikePriceTrader():
 
         return rsi_results
 
+    def calculate_multi_rsi(self):
+        """
+        Calculates 3, 5, and 10-minute RSI using pandas-ta.
+        Works with UTC timestamps in self.historical_df.
+        Returns latest RSI values as a dictionary.
+        """
+        df = self.historical_df.copy()
 
+        # Ensure 'timestamp' is datetime index
+        df = df.set_index('timestamp').sort_index()
+
+        rsi_results = {}
+
+        for timeframe in [3, 5, 10]:
+            resampled = df.resample(f'{timeframe}min').agg({
+                'open': 'first',
+                'high': 'max',
+                'low': 'min',
+                'close': 'last',
+                'volume': 'sum'
+            }).dropna()
+
+            # Compute RSI
+            rsi = ta.rsi(resampled['close'], length=14)
+
+            if not rsi.dropna().empty:
+                latest_rsi = rsi.dropna().iloc[-1]
+            else:
+                latest_rsi = None
+
+            rsi_results[f'RSI_{timeframe}m'] = latest_rsi
+
+        return rsi_results
+
+        
 
     def check_retracement_or_reset(self):
         """
