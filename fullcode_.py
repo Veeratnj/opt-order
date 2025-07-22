@@ -513,8 +513,8 @@ class TripleEMAStrategyOptimized:
 
 if __name__ == "__main__":
 
-    historical_data = pd.read_csv('live-11.csv')
-    live_data = pd.read_csv('live-14.csv')
+    historical_data = pd.read_csv('ohlc-25-old.csv')
+    live_data = pd.read_csv('ohlc-25.csv')
     strategy = TripleEMAStrategyOptimized()
     strategy.load_historical_data(historical_data)
     # exit()

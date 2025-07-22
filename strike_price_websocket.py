@@ -51,6 +51,9 @@ def trigger(token):
     with open("fib.txt", "a") as f:
                     f.write(f"type og fib {type(signals_dict)}  check_fibonacci_entry_signal: {str(signals_dict)}\n")
 
+    entry_triggered = True
+    stop_loss = None
+    target = None
     if isinstance(signals_dict, dict):
                     entry_triggered = True
                     # entry_price = signals_dict['entry_price']
@@ -78,9 +81,7 @@ def trigger(token):
 
     instruments = [(MarketFeed.NSE_FNO, token, MarketFeed.Ticker)]
     version = "v2"
-    entry_triggered = True
-    stop_loss = None
-    target = None
+    
 
     import asyncio
     try:
@@ -193,7 +194,7 @@ def trigger(token):
                 # break
             
             # elif opt_obj.candle_rsi_checker():
-            elif  current_rsi['RSI_3m'] < 50 or current_rsi['RSI_5m'] < 50 or current_rsi['RSI_10m'] < 50:
+            elif   current_rsi['RSI_5m'] < 50 or current_rsi['RSI_10m'] < 50:
                 logging.info(f"✅ Exit: rsi Hit @ {current_ltp}")
                 admin_obj.dhan.place_order(
                     security_id=token,
