@@ -351,7 +351,7 @@ class StrategyTrader:
                     print(f"BUY_ENTRY signal received token number is {option_token_row['token'].iloc[0]}")
                     open_order=True
                     trade_count -= 1
-
+                    logging.info(f"strike price token number is {str(option_token_row['token'].iloc[0])}")
                     res=trigger(token=str(option_token_row['token'].iloc[0]))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
@@ -373,7 +373,7 @@ class StrategyTrader:
                     print(f"SELL_ENTRY signal received token number is {option_token_row['token'].iloc[0]}")
                     open_order=True
                     trade_count -= 1
-
+                    logging.info(f"strike price token number is {str(option_token_row['token'].iloc[0])}")
                     res=trigger(token=str(option_token_row['token'].iloc[0]))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
