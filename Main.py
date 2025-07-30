@@ -409,10 +409,10 @@ class StrategyTrader:
                     #     """,
                     #     params={"id": row['id']}
                     # )
-                    logging.info(f"Buy exit executed for stock_token={stock_token}")
-                    order_params['transactiontype'] = 'SELL'
-                    # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
-                    angelone_response = api_obj.place_order(order_params=order_params,)
+                    # logging.info(f"Buy exit executed for stock_token={stock_token}")
+                    # order_params['transactiontype'] = 'SELL'
+                    # # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
+                    # angelone_response = api_obj.place_order(order_params=order_params,)
 
                 elif False and signal == 'SELL_EXIT' or (previous_entry_exit_key == 'SELL_EXIT' and exit_flag):
                     print('sell exit signal received')
