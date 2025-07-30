@@ -1,10 +1,11 @@
 import logging
-from dhanhq import DhanContext, MarketFeed
+from dhanhq import DhanContext, MarketFeed,dhanhq
 from datetime import datetime, timedelta
 import pandas as pd
 import pytz
 from creds import *
 # from options import OptionsStrikePriceTrader
+from place_dhan_order import order_function
 from test import OptionsStrikePriceTrader as OSPT
 
 # Setup timezone
@@ -31,6 +32,14 @@ def get_previous_minute_candle(df: pd.DataFrame):
     filtered_row = df[df['timestamp'] == target_time]
     return filtered_row.iloc[0] if not filtered_row.empty else None
 
+# def load_credentials():
+#             # Load credentials from a JSON file
+#             with open('creds.json', 'r') as file:
+#                 creds = json.load(file)
+#             return creds
+# user_creds = load_credentials()
+# user_ids=[2,5]
+
 
 def trigger(token):
     print(f"Triggering bot for token: {token}")
@@ -47,11 +56,16 @@ def trigger(token):
     if rsi_value['RSI_5m'] < 50 and rsi_value['RSI_10m'] < 50:
         return 'initial condition failed'
     # signals_dict=opt_obj.check_fibonacci_entry_signal()
-    signals_dict=opt_obj.check_retracement_or_reset()
+    signals_dict=opt_obj.check_retracement()
     with open("fib.txt", "a") as f:
                     f.write(f"type og fib {type(signals_dict)}  check_fibonacci_entry_signal: {str(signals_dict)}\n")
 
-    if isinstance(signals_dict, dict):
+    entry_triggered = True
+    stop_loss = None
+    target = None
+    # self.dhan_context = DhanContext(user_dict['dhan_creds']['client_id'],user_dict['dhan_creds']['access_token'])
+    # self.dhan = dhanhq(self.dhan_context)
+    if isinstance(signals_dict, dict) :
                     entry_triggered = True
                     # entry_price = signals_dict['entry_price']
                     # stop_loss = signals_dict['stop_loss']
@@ -62,15 +76,21 @@ def trigger(token):
                     target = signals_dict['target']
 
                     logging.info(f"📈 Entry Triggered @ {entry_price} | SL: {stop_loss} | Target: {target}")
-                    admin_obj.dhan.place_order(
-                        security_id=token,
-                        exchange_segment=admin_obj.dhan.NSE_FNO,
-                        transaction_type=admin_obj.dhan.BUY,
-                        quantity=30,
-                        order_type=admin_obj.dhan.MARKET,
-                        product_type=admin_obj.dhan.INTRA,
-                        price=0
-                    )
+                    
+                    # for user_id in user_ids:
+                    #     user_dict = user_creds[str(user_id)]
+                    #     dhan_context = DhanContext(user_dict['dhan_creds']['client_id'],user_dict['dhan_creds']['access_token'])
+                    #     dhan = dhanhq(dhan_context)
+                    #     dhan.place_order(
+                    #         security_id=token,
+                    #         exchange_segment=admin_obj.dhan.NSE_FNO,
+                    #         transaction_type=admin_obj.dhan.BUY,
+                    #         quantity=30,
+                    #         order_type=admin_obj.dhan.MARKET,
+                    #         product_type=admin_obj.dhan.INTRA,
+                    #         price=0
+                    #     )
+                    order_function(transaction_type='entry',token=token)
     else:
          return f'error in check_fibonacci_entry_signal {signals_dict}'
     print('check point 3')
@@ -78,9 +98,7 @@ def trigger(token):
 
     instruments = [(MarketFeed.NSE_FNO, token, MarketFeed.Ticker)]
     version = "v2"
-    entry_triggered = True
-    stop_loss = None
-    target = None
+    
 
     import asyncio
     try:
@@ -164,47 +182,89 @@ def trigger(token):
             current_rsi=opt_obj.calculate_multi_rsi()
             if False and entry_triggered:
                 pass
-            if False and current_ltp <= stop_loss:
+            if  current_ltp <= stop_loss:
                 logging.info(f"🛑 Exit: Stop Loss Hit @ {current_ltp}")
-                admin_obj.dhan.place_order(
-                    security_id=token,
-                    exchange_segment=admin_obj.dhan.NSE_FNO,
-                    transaction_type=admin_obj.dhan.SELL,
-                    quantity=30,
-                    order_type=admin_obj.dhan.MARKET,
-                    product_type=admin_obj.dhan.INTRA,
-                    price=0
-                )
-                return f"🛑 Exit: Stop Loss Hit @ {current_ltp}"
+                # for user_id in user_ids:
+                #         user_dict = user_creds[str(user_id)]
+                #         dhan_context = DhanContext(user_dict['dhan_creds']['client_id'],user_dict['dhan_creds']['access_token'])
+                #         dhan = dhanhq(dhan_context)
+                #         dhan.place_order(
+                #             security_id=token,
+                #             exchange_segment=admin_obj.dhan.NSE_FNO,
+                #             transaction_type=admin_obj.dhan.BUY,
+                #             quantity=30,
+                #             order_type=admin_obj.dhan.MARKET,
+                #             product_type=admin_obj.dhan.INTRA,
+                #             price=0
+                #         )
+                # admin_obj.dhan.place_order(
+                #     security_id=token,
+                #     exchange_segment=admin_obj.dhan.NSE_FNO,
+                #     transaction_type=admin_obj.dhan.SELL,
+                #     quantity=30,
+                #     order_type=admin_obj.dhan.MARKET,
+                #     product_type=admin_obj.dhan.INTRA,
+                #     price=0
+                # )
+                res=order_function(transaction_type='exit',token=token)
+                return f"🛑 Exit: Stop Loss Hit @ {current_ltp} dhan response {res}"
                 # break
 
             elif current_ltp >= target:
                 logging.info(f"✅ Exit: Target Hit @ {current_ltp}")
-                admin_obj.dhan.place_order(
-                    security_id=token,
-                    exchange_segment=admin_obj.dhan.NSE_FNO,
-                    transaction_type=admin_obj.dhan.SELL,
-                    quantity=30,
-                    order_type=admin_obj.dhan.MARKET,
-                    product_type=admin_obj.dhan.INTRA,
-                    price=0
-                )
-                return f"✅ Exit: Target Hit @ {current_ltp}"
+                # t=admin_obj.dhan.place_order(
+                #     security_id=token,
+                #     exchange_segment=admin_obj.dhan.NSE_FNO,
+                #     transaction_type=admin_obj.dhan.SELL,
+                #     quantity=30,
+                #     order_type=admin_obj.dhan.MARKET,
+                #     product_type=admin_obj.dhan.INTRA,
+                #     price=0
+                # )
+                # for user_id in user_ids:
+                #         user_dict = user_creds[str(user_id)]
+                #         dhan_context = DhanContext(user_dict['dhan_creds']['client_id'],user_dict['dhan_creds']['access_token'])
+                #         dhan = dhanhq(dhan_context)
+                #         dhan.place_order(
+                #             security_id=token,
+                #             exchange_segment=admin_obj.dhan.NSE_FNO,
+                #             transaction_type=admin_obj.dhan.BUY,
+                #             quantity=30,
+                #             order_type=admin_obj.dhan.MARKET,
+                #             product_type=admin_obj.dhan.INTRA,
+                #             price=0
+                #         )
+                res=order_function(transaction_type='exit',token=token)
+                return f"✅ Exit: Target Hit @ {current_ltp} dhan response {res}"
                 # break
             
             # elif opt_obj.candle_rsi_checker():
-            elif  current_rsi['RSI_3m'] < 50 or current_rsi['RSI_5m'] < 50 or current_rsi['RSI_10m'] < 50:
+            elif   current_rsi['RSI_5m'] < 50 or current_rsi['RSI_10m'] < 50:
                 logging.info(f"✅ Exit: rsi Hit @ {current_ltp}")
-                admin_obj.dhan.place_order(
-                    security_id=token,
-                    exchange_segment=admin_obj.dhan.NSE_FNO,
-                    transaction_type=admin_obj.dhan.SELL,
-                    quantity=30,
-                    order_type=admin_obj.dhan.MARKET,
-                    product_type=admin_obj.dhan.INTRA,
-                    price=0
-                )
-                return f"✅ Exit: rsi HitT @ {current_ltp}"
+                # admin_obj.dhan.place_order(
+                #     security_id=token,
+                #     exchange_segment=admin_obj.dhan.NSE_FNO,
+                #     transaction_type=admin_obj.dhan.SELL,
+                #     quantity=30,
+                #     order_type=admin_obj.dhan.MARKET,
+                #     product_type=admin_obj.dhan.INTRA,
+                #     price=0
+                # )
+                # for user_id in user_ids:
+                #         user_dict = user_creds[str(user_id)]
+                #         dhan_context = DhanContext(user_dict['dhan_creds']['client_id'],user_dict['dhan_creds']['access_token'])
+                #         dhan = dhanhq(dhan_context)
+                #         dhan.place_order(
+                #             security_id=token,
+                #             exchange_segment=admin_obj.dhan.NSE_FNO,
+                #             transaction_type=admin_obj.dhan.BUY,
+                #             quantity=30,
+                #             order_type=admin_obj.dhan.MARKET,
+                #             product_type=admin_obj.dhan.INTRA,
+                #             price=0
+                #         )
+                res=order_function(transaction_type='exit',token=token)
+                return f"✅ Exit: rsi Hit @ {current_ltp} dhan response {res}"
                     # break
 
     except Exception as e:
