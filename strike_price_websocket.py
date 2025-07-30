@@ -210,7 +210,7 @@ def trigger(token):
     except Exception as e:
         logging.exception(f"❌ Exception occurred: {e}")
     finally:
-        data.close()
+        # data.close()
         logging.info("🔒 WebSocket connection closed.")
 
 
