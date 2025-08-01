@@ -7,7 +7,7 @@ def load_credentials(path='creds.json'):
         return json.load(file)
 
 user_creds = load_credentials()
-user_ids = [2] 
+user_ids = [2,7] 
 
 def order_function(transaction_type: str, token: str):
     """
