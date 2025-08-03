@@ -39,7 +39,7 @@ def post_to_close_trade_api(order_data: dict):
         return {"error": str(e)}
 
 # --- Main Order Function ---
-def order_function(transaction_type: str, token: str, ltp: float = 0.0, option_symbol: str = 'BANKNIFTYXXXCE'):
+def order_function(transaction_type: str, token: str, ltp: float = 0.0, option_symbol: str = 'BANKNIFTYXXX',position:str=None):
     """
     Places Dhan orders and logs trades to FastAPI backend.
 
@@ -83,7 +83,7 @@ def order_function(transaction_type: str, token: str, ltp: float = 0.0, option_s
                 open_payload = {
                     "order_id": custom_order_id,
                     "option_symbol": option_symbol,
-                    "option_type": "CE" if "CE" in option_symbol.upper() else "PE",
+                    "option_type": "CE" if "CE" == position.upper() else "PE",
                     "trade_type": "BUY",
                     "quantity": 35,
                     "entry_ltp": ltp,
@@ -127,6 +127,7 @@ if __name__ == '__main__':
         transaction_type='entry',
         token='54033',
         ltp=500.0,
-        option_symbol='BANKNIFTY24AUG48000CE'
+        option_symbol='BANKNIFTY24AUG48000CE',
+        position='CE'
     )
     print(json.dumps(response, indent=2))

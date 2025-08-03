@@ -41,7 +41,7 @@ def get_previous_minute_candle(df: pd.DataFrame):
 # user_ids=[2,5]
 
 
-def trigger(token):
+def trigger(token,position='PE',symbol=None):
     print(f"Triggering bot for token: {token}")
     admin_obj = UserUtilsClass('7')
     dhan_context = admin_obj.dhan_context
@@ -90,7 +90,7 @@ def trigger(token):
                     #         product_type=admin_obj.dhan.INTRA,
                     #         price=0
                     #     )
-                    order_function(transaction_type='entry',token=token,ltp = candle_df['close'].iloc[-1],option_symbol=token)
+                    order_function(transaction_type='entry',token=token,ltp = candle_df['close'].iloc[-1],option_symbol=symbol,position=position)
     else:
          return f'error in check_fibonacci_entry_signal {signals_dict}'
     print('check point 3')
@@ -206,7 +206,7 @@ def trigger(token):
                 #     product_type=admin_obj.dhan.INTRA,
                 #     price=0
                 # )
-                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=symbol,position=position)
                 return f"🛑 Exit: Stop Loss Hit @ {current_ltp} dhan response {res}"
                 # break
 
@@ -234,7 +234,7 @@ def trigger(token):
                 #             product_type=admin_obj.dhan.INTRA,
                 #             price=0
                 #         )
-                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=symbol,position=position)
                 return f"✅ Exit: Target Hit @ {current_ltp} dhan response {res}"
                 # break
             
@@ -263,7 +263,7 @@ def trigger(token):
                 #             product_type=admin_obj.dhan.INTRA,
                 #             price=0
                 #         )
-                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=symbol,position=position)
                 return f"✅ Exit: rsi Hit @ {current_ltp} dhan response {res}"
                     # break
 
