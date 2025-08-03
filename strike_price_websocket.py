@@ -90,7 +90,7 @@ def trigger(token):
                     #         product_type=admin_obj.dhan.INTRA,
                     #         price=0
                     #     )
-                    order_function(transaction_type='entry',token=token)
+                    order_function(transaction_type='entry',token=token,ltp = candle_df['close'].iloc[-1],option_symbol=token)
     else:
          return f'error in check_fibonacci_entry_signal {signals_dict}'
     print('check point 3')
@@ -206,7 +206,7 @@ def trigger(token):
                 #     product_type=admin_obj.dhan.INTRA,
                 #     price=0
                 # )
-                res=order_function(transaction_type='exit',token=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
                 return f"🛑 Exit: Stop Loss Hit @ {current_ltp} dhan response {res}"
                 # break
 
@@ -234,7 +234,7 @@ def trigger(token):
                 #             product_type=admin_obj.dhan.INTRA,
                 #             price=0
                 #         )
-                res=order_function(transaction_type='exit',token=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
                 return f"✅ Exit: Target Hit @ {current_ltp} dhan response {res}"
                 # break
             
@@ -263,7 +263,7 @@ def trigger(token):
                 #             product_type=admin_obj.dhan.INTRA,
                 #             price=0
                 #         )
-                res=order_function(transaction_type='exit',token=token)
+                res=order_function(transaction_type='exit',token=token,ltp=current_ltp,option_symbol=token)
                 return f"✅ Exit: rsi Hit @ {current_ltp} dhan response {res}"
                     # break
 
