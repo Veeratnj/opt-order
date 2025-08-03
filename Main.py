@@ -339,7 +339,7 @@ class StrategyTrader:
                 if signal == 'BUY_ENTRY' and datetime.now().time()<=time_c(13, 30):
                     previous_entry_exit_key = 'BUY_EXIT'
                     quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'],user_id=user_id)
-                    tokens_data_frame = pd.read_excel('options-jul-2025.xlsx')
+                    tokens_data_frame = pd.read_excel('options-aug-2025.xlsx')
                     # tokens_data_frame.drop_duplicates(subset=['strike_price'],inplace=True)
                     # option_token_row = tokens_data_frame[tokens_data_frame['strike_price'] == strike_price and tokens_data_frame['position']=='CE']
                     option_token_row = tokens_data_frame[
@@ -363,7 +363,7 @@ class StrategyTrader:
                     previous_entry_exit_key = 'SELL_EXIT'
                     quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'])
                     print('SELL_ENTRY signal received')
-                    tokens_data_frame = pd.read_excel('options-jul-2025.xlsx')
+                    tokens_data_frame = pd.read_excel('options-aug-2025.xlsx')
                     print('length is :: ',len(tokens_data_frame),"strike price is ::",strike_price)
                     # tokens_data_frame.drop_duplicates(subset=['strike_price'],inplace=True)
                     # option_token_row = tokens_data_frame[tokens_data_frame['strike_price'] == strike_price and tokens_data_frame['position']=='PE']  
