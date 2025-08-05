@@ -3,7 +3,8 @@ import requests
 from datetime import datetime
 from dhanhq import dhanhq, DhanContext
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 # --- Load credentials ---
 def load_credentials(path='creds.json'):
     with open(path, 'r') as file:
