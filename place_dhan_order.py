@@ -14,7 +14,7 @@ user_creds = load_credentials()
 user_ids = [2]
 
 # --- API base for your FastAPI server (e.g., http://localhost:8000) ---
-API_BASE = os.getenv('API_URL', 'http://localhost:8001')  # Default fallback
+API_BASE = os.getenv('API_URL')  # Default fallback
 
 # --- Generate custom order ID ---
 def generate_order_id(user_id: int, token: str, side: str) -> str:
