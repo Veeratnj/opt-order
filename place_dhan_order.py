@@ -13,8 +13,9 @@ def load_credentials(path='creds.json'):
 user_creds = load_credentials()
 user_ids = [2]
 
-# --- API base for your FastAPI server (e.g., http://localhost:8000) ---
-API_BASE = os.getenv('API_URL')  # Default fallback
+
+# API_BASE = os.getenv('API_URL') 
+API_BASE = 'https://smartelitetradingclub.live'  
 
 # --- Generate custom order ID ---
 def generate_order_id(user_id: int, token: str, side: str) -> str:
