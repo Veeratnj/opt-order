@@ -41,7 +41,7 @@ def get_previous_minute_candle(df: pd.DataFrame):
 # user_ids=[2,5]
 
 
-def trigger(token,position='PE',symbol=None):
+def trigger(token:str,position:str='PE',symbol:str=None):
     print(f"Triggering bot for token: {token}")
     admin_obj = UserUtilsClass('7')
     dhan_context = admin_obj.dhan_context

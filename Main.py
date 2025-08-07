@@ -353,8 +353,8 @@ class StrategyTrader:
                     trade_count -= 1
                     logging.info(f"strike price token number is {str(option_token_row['token'].iloc[0])}")
                     # symbol=str(option_token_row['index_name'].iloc[0])+' '+str(option_token_row['strike_price'].iloc[0])
-                    symbol=option_token_row['symbol']
-                    res=trigger(token=str(option_token_row['token'].iloc[0]),position='CE',symbol=symbol)
+                    symbol=option_token_row['symbol'].iloc[0]
+                    res=trigger(token=str(option_token_row['token'].iloc[0]),position='CE',symbol=str(symbol))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
 
@@ -377,8 +377,8 @@ class StrategyTrader:
                     trade_count -= 1
                     logging.info(f"strike price token number is {str(option_token_row['token'].iloc[0])}")
                     # symbol=str(option_token_row['index_name'].iloc[0])+' '+str(option_token_row['strike_price'].iloc[0])
-                    symbol=option_token_row['symbol']
-                    res=trigger(token=str(option_token_row['token'].iloc[0]),position='PE',symbol=symbol)
+                    symbol=option_token_row['symbol'].iloc[0]
+                    res=trigger(token=str(option_token_row['token'].iloc[0]),position='PE',symbol=str(symbol))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
                     
