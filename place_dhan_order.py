@@ -1,4 +1,5 @@
 import json
+import time
 import requests
 from datetime import datetime
 from dhanhq import dhanhq, DhanContext
@@ -15,6 +16,8 @@ user_ids = [2]
 
 
 API_BASE = os.getenv('API_URL') 
+print(f"API_BASE: {API_BASE}")
+time.sleep(5)
 # API_BASE = 'https://smartelitetradingclub.live'  
 
 # --- Generate custom order ID ---
