@@ -388,66 +388,66 @@ class StrategyTrader:
                     trade_count -= 1
                     
                    
-                elif signal == 'BUY_EXIT' or (previous_entry_exit_key == 'BUY_EXIT' and exit_flag and False):
-                    open_order=False
-                    # psql.execute_query(
-                    #     """
-                    #     UPDATE equity_trade_history
-                    #     SET exit_ltp = :exit_ltp, 
-                    #         trade_exit_time = :trade_exit_time,
-                    #         total_price = :total_price
-                    #     WHERE order_id = :order_id AND trade_type = 'buy' AND exit_ltp = 0;
-                    #     """,
-                    #     params={
-                    #         "exit_ltp": ltp_price,
-                    #         "trade_exit_time": datetime.now(),
-                    #         "order_id": order_manager_uuid,
-                    #         "total_price": quantity * ltp_price
-                    #     }
-                    # )
-                    # # psql.execute_query(
-                    #     raw_sql="""
-                    #     UPDATE user_active_strategy
-                    #     SET status = 'close'
-                    #     WHERE id = :id;
-                    #     """,
-                    #     params={"id": row['id']}
-                    # )
-                    # logging.info(f"Buy exit executed for stock_token={stock_token}")
-                    # order_params['transactiontype'] = 'SELL'
-                    # # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
-                    # angelone_response = api_obj.place_order(order_params=order_params,)
+                # elif signal == 'BUY_EXIT' or (previous_entry_exit_key == 'BUY_EXIT' and exit_flag and False):
+                #     open_order=False
+                #     # psql.execute_query(
+                #     #     """
+                #     #     UPDATE equity_trade_history
+                #     #     SET exit_ltp = :exit_ltp, 
+                #     #         trade_exit_time = :trade_exit_time,
+                #     #         total_price = :total_price
+                #     #     WHERE order_id = :order_id AND trade_type = 'buy' AND exit_ltp = 0;
+                #     #     """,
+                #     #     params={
+                #     #         "exit_ltp": ltp_price,
+                #     #         "trade_exit_time": datetime.now(),
+                #     #         "order_id": order_manager_uuid,
+                #     #         "total_price": quantity * ltp_price
+                #     #     }
+                #     # )
+                #     # # psql.execute_query(
+                #     #     raw_sql="""
+                #     #     UPDATE user_active_strategy
+                #     #     SET status = 'close'
+                #     #     WHERE id = :id;
+                #     #     """,
+                #     #     params={"id": row['id']}
+                #     # )
+                #     # logging.info(f"Buy exit executed for stock_token={stock_token}")
+                #     # order_params['transactiontype'] = 'SELL'
+                #     # # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
+                #     # angelone_response = api_obj.place_order(order_params=order_params,)
 
-                elif False and signal == 'SELL_EXIT' or (previous_entry_exit_key == 'SELL_EXIT' and exit_flag):
-                    print('sell exit signal received')
-                    open_order=False
-                    order_params['transactiontype'] = 'BUY'
-                    psql.execute_query(
-                        """
-                        UPDATE equity_trade_history
-                        SET exit_ltp = :exit_ltp, 
-                            trade_exit_time = :trade_exit_time,
-                            total_price = :total_price
-                        WHERE order_id = :order_id AND trade_type = 'sell' AND exit_ltp = 0;
-                        """,
-                        params={
-                            "exit_ltp": ltp_price,
-                            "trade_exit_time": datetime.now(),
-                            "order_id": order_manager_uuid,
-                            "total_price": quantity * ltp_price
-                        }
-                    )
-                    psql.execute_query(
-                        raw_sql="""
-                        UPDATE user_active_strategy
-                        SET status = 'close'
-                        WHERE id = :id;
-                        """,
-                        params={"id": row['id']}
-                    )
-                    logging.info(f"Sell exit executed for stock_token={stock_token}")
-                    # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
-                    angelone_response =api_obj.place_order(order_params=order_params,)
+                # elif False and signal == 'SELL_EXIT' or (previous_entry_exit_key == 'SELL_EXIT' and exit_flag):
+                #     print('sell exit signal received')
+                #     open_order=False
+                #     order_params['transactiontype'] = 'BUY'
+                #     psql.execute_query(
+                #         """
+                #         UPDATE equity_trade_history
+                #         SET exit_ltp = :exit_ltp, 
+                #             trade_exit_time = :trade_exit_time,
+                #             total_price = :total_price
+                #         WHERE order_id = :order_id AND trade_type = 'sell' AND exit_ltp = 0;
+                #         """,
+                #         params={
+                #             "exit_ltp": ltp_price,
+                #             "trade_exit_time": datetime.now(),
+                #             "order_id": order_manager_uuid,
+                #             "total_price": quantity * ltp_price
+                #         }
+                #     )
+                #     psql.execute_query(
+                #         raw_sql="""
+                #         UPDATE user_active_strategy
+                #         SET status = 'close'
+                #         WHERE id = :id;
+                #         """,
+                #         params={"id": row['id']}
+                #     )
+                #     logging.info(f"Sell exit executed for stock_token={stock_token}")
+                #     # angelone_response = smart_api_obj.place_order(order_params=order_params, user_id=user_id, stock_token=stock_token,smart_api_obj=smart_api_obj)
+                #     angelone_response =api_obj.place_order(order_params=order_params,)
 
                 # Sleep to avoid double execution in the same minute
                 time.sleep(2)
