@@ -3,6 +3,7 @@ from dhanhq import DhanContext, MarketFeed,dhanhq
 from datetime import datetime, timedelta
 import pandas as pd
 import pytz
+from api import insert_or_update_ltp
 from creds import *
 # from options import OptionsStrikePriceTrader
 from place_dhan_order import order_function
@@ -130,9 +131,11 @@ def trigger(token:str,position:str='PE',symbol:str=None):
             response = data.get_data()
             if not response or 'LTP' not in response:
                 continue
+            
 
             current_ltp = float(response['LTP'])
             print(current_ltp)
+            insert_or_update_ltp(option_symbol=symbol, ltp=current_ltp)
 
             if not entry_triggered and datetime.now(ist) - flagtime >= timedelta(minutes=1):
                 flagtime = datetime.now(ist)

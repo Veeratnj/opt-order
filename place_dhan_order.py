@@ -15,10 +15,10 @@ user_creds = load_credentials()
 user_ids = [2]
 
 
-API_BASE = os.getenv('API_URL') 
-print(f"API_BASE: {API_BASE}")
+# API_BASE = os.getenv('API_URL') 
+# print(f"API_BASE: {API_BASE}")
 time.sleep(5)
-# API_BASE = 'https://smartelitetradingclub.live'  
+API_BASE = 'https://smartelitetradingclub.live'  
 
 # --- Generate custom order ID ---
 def generate_order_id(user_id: int, token: str, side: str) -> str:
