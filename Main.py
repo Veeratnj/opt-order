@@ -329,16 +329,16 @@ class StrategyTrader:
                 print('start time is ==',start_time)
                 strategy.add_live_data(open_=open_,close=close, high=high, low=low, volume=0, timestamp=start_time)
                 signal,stop_loss_,target_,strike_price = strategy.generate_signal()
-                if target_ is not None:
-                    target = target_
-                if stop_loss_ is not None:
-                    stop_loss = stop_loss_
+                # if target_ is not None:
+                #     target = target_
+                # if stop_loss_ is not None:
+                #     stop_loss = stop_loss_
                 
-                logging.info(f"Signal generated: {signal} stop loss {stop_loss} target {target} previous entry exit key {previous_entry_exit_key} ltp {ltp_price}  token {stock_token} ")
+                logging.info(f"Signal generated: {signal}  strike price  {strike_price} ")
 
-                if signal == 'BUY_ENTRY' and datetime.now().time()<=time_c(13, 30):
+                if signal == 'BUY_ENTRY' and datetime.now().time()<=time_c(11, 30):
                     previous_entry_exit_key = 'BUY_EXIT'
-                    quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'],user_id=user_id)
+                    # quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'],user_id=user_id)
                     tokens_data_frame = pd.read_excel('options-aug-2025.xlsx')
                     # tokens_data_frame.drop_duplicates(subset=['strike_price'],inplace=True)
                     # option_token_row = tokens_data_frame[tokens_data_frame['strike_price'] == strike_price and tokens_data_frame['position']=='CE']
@@ -357,12 +357,14 @@ class StrategyTrader:
                     res=trigger(token=str(option_token_row['token'].iloc[0]),position='CE',symbol=str(symbol))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
+                    historical_df = self.get_historical_ohlc(token='25',limit=500)
+                    strategy.load_historical_data(historical_df)
 
 
 
-                elif signal == 'SELL_ENTRY' and datetime.now().time() <= time_c(13, 30): 
+                elif signal == 'SELL_ENTRY' and datetime.now().time() <= time_c(11, 30): 
                     previous_entry_exit_key = 'SELL_EXIT'
-                    quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'])
+                    # quantity=stocks_quantity(ltp=ltp_price,balance=api_obj.smart_api_obj.rmsLimit()['data']['availablecash'])
                     print('SELL_ENTRY signal received')
                     tokens_data_frame = pd.read_excel('options-aug-2025.xlsx')
                     print('length is :: ',len(tokens_data_frame),"strike price is ::",strike_price)
@@ -374,18 +376,20 @@ class StrategyTrader:
                     ]                  
                     print(f"SELL_ENTRY signal received token number is {option_token_row['token'].iloc[0]}")
                     open_order=True
-                    trade_count -= 1
+                    # trade_count -= 1
                     logging.info(f"strike price token number is {str(option_token_row['token'].iloc[0])}")
                     # symbol=str(option_token_row['index_name'].iloc[0])+' '+str(option_token_row['strike_price'].iloc[0])
                     symbol=option_token_row['symbol'].iloc[0]
                     res=trigger(token=str(option_token_row['token'].iloc[0]),position='PE',symbol=str(symbol))
                     print('trigger response',res)
                     logging.info(f"trigger response  : {res}")
+                    historical_df = self.get_historical_ohlc(token='25',limit=500)
+                    strategy.load_historical_data(historical_df)
                     
                     
-                    open_order=True
+                    # open_order=True
                     
-                    trade_count -= 1
+                    # trade_count -= 1
                     
                    
                 # elif signal == 'BUY_EXIT' or (previous_entry_exit_key == 'BUY_EXIT' and exit_flag and False):
@@ -453,12 +457,12 @@ class StrategyTrader:
                 time.sleep(2)
 
 
-            print((trade_count > 0 and self.is_market_open()) or open_order)
-            print(trade_count)
-            print(self.is_market_open())
-            print(open_order)
-            if trade_count > 0:
-                logging.info("Trading day ended before all trades could be completed.")
+            # print((trade_count > 0 and self.is_market_open()) or open_order)
+            # print(trade_count)
+            # print(self.is_market_open())
+            # print(open_order)
+            # if trade_count > 0:
+            #     logging.info("Trading day ended before all trades could be completed.")
 
         except Exception as e:
             # raise e
