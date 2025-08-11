@@ -114,7 +114,7 @@ class TripleEMAStrategyOptimized:
         # Session: 9:15 AM to 1:15 PM IST
         self.df['in_session'] = self.df['timestamp'].dt.time.between(
             pd.to_datetime("09:15").time(),
-            pd.to_datetime("22:15").time()
+            pd.to_datetime("11:30").time()
         )
         df_rsi = self.df.set_index('timestamp')
         print(len(self.df))
