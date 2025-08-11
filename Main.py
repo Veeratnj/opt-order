@@ -322,7 +322,7 @@ class StrategyTrader:
                 # print(temp_df)
                 start_time,open_, high, low, close = self.get_ohlc(token='25',limit=1)
                 # start_time,open_, high, low, close = smart_api_obj.get_latest_5min_candle(symboltoken=stock_token, )
-                if start_time == previous_candle_time and not exit_flag:
+                if start_time == previous_candle_time :
                     previous_candle_time=start_time
                     continue
                 previous_candle_time=start_time

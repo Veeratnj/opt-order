@@ -513,8 +513,8 @@ class TripleEMAStrategyOptimized:
 
 if __name__ == "__main__":
 
-    historical_data = pd.read_csv('ohlc-25-old.csv')
-    live_data = pd.read_csv('ohlc-25.csv')
+    historical_data = pd.read_csv('ohlc-old.csv')
+    live_data = pd.read_csv('ohlc.csv')
     strategy = TripleEMAStrategyOptimized()
     strategy.load_historical_data(historical_data)
     # exit()
@@ -534,5 +534,5 @@ if __name__ == "__main__":
         if signal:
             print('signal ',signal)
     print(strategy.df.columns)
-    strategy.df.to_csv('atr5.csv', index=False)
+    strategy.df.to_csv('option-test.csv', index=False)
 
