@@ -12,7 +12,7 @@ def load_credentials(path='creds.json'):
         return json.load(file)
 
 user_creds = load_credentials()
-user_ids = [2]
+user_ids = [2,8]
 
 
 # API_BASE = os.getenv('API_URL') 

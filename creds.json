@@ -70,5 +70,22 @@
             "client_id":"",
             "access_token":""
         }
+    },
+     "8":{
+        "user_id":8,
+        "angelone_creds":{
+            "name":"Abrar",
+            "email":"abrar@test.com",
+            "api_key":"",
+            "username":"",
+            "pwd":0,
+            "token":""
+        },
+        "dhan_creds":{
+            "name":"Abrar",
+            "email":"abrar@test.com",
+            "client_id":"1108090286",
+            "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkaGFuIiwicGFydG5lcklkIjoiIiwiZXhwIjoxNzU3NjA4MzYxLCJ0b2tlbkNvbnN1bWVyVHlwZSI6IlNFTEYiLCJ3ZWJob29rVXJsIjoiIiwiZGhhbkNsaWVudElkIjoiMTEwODA5MDI4NiJ9.6QuFsfKLgRS2NWHysWr_5iis2fb0wMxjjFx0iiV8e7qVpUQYtKtO_yCUIOEKk0OjHWnAyL4gimQtoWE48g9JVA"
+        }
     }
 }
